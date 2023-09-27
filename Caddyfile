@@ -30,5 +30,5 @@ adrianjanczenia.dev {
 }
 
 broker.adrianjanczenia.dev {
-	reverse_proxy http://broker-service:8080
+	reverse_proxy http://broker-service
 }
