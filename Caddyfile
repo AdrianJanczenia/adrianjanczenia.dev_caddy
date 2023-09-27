@@ -21,14 +21,14 @@
 	}
 }
 
-adrianjanczenia.net:443 {
+adrianjanczenia.dev {
 	encode zstd gzip
 	import static
 	import security
 
-	reverse_proxy  http://front-end
+	reverse_proxy  http://front-end:3000
 }
 
-broker.adrianjanczenia.dev:443 {
+broker.adrianjanczenia.dev {
 	reverse_proxy http://broker-service:8080
 }
