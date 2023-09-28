@@ -26,11 +26,9 @@ adrianjanczenia.dev adrianjanczenia.dev:3000/ws {
 	import static
 	import security
 
-	reverse_proxy  http://front-end:3000 {
-	    transparent
-	}
+	reverse_proxy  https://front-end:3000
 }
 
 broker.adrianjanczenia.dev {
-	reverse_proxy http://broker-service
+	reverse_proxy https://broker-service
 }
