@@ -26,7 +26,7 @@ adrianjanczenia.dev {
 	import static
 	import security
 
-	reverse_proxy  http://front-end
+	reverse_proxy  http://front-end:3000
 }
 
 broker.adrianjanczenia.dev {
