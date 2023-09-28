@@ -21,14 +21,10 @@
 	}
 }
 
-adrianjanczenia.dev {
+adrianjanczenia.dev adrianjanczenia.dev:3000/ws {
 	encode zstd gzip
 	import static
 	import security
-
-	proxy /ws http://front-end:3000 {
-	    websocket
-	}
 
 	reverse_proxy  http://front-end:3000
 }
