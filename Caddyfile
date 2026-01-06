@@ -31,8 +31,7 @@
     }
 
     handle_errors {
-        rewrite * /error
-        reverse_proxy frontend-service:8080
+        respond "{err.status_code} {err.status_text}"
     }
 
     log {
