@@ -20,7 +20,7 @@
     }
 }
 
-{$DOMAIN_NAME} {
+{$DOMAIN_NAME}, www.{$DOMAIN_NAME} {
     encode zstd gzip
     import static
     import security
