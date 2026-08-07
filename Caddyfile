@@ -20,7 +20,7 @@
     }
 }
 
-{$DOMAIN_NAME}, www.{$DOMAIN_NAME} {
+http://{$DOMAIN_NAME}, http://www.{$DOMAIN_NAME}, http://:80 {
     encode zstd gzip
     import static
     import security
