@@ -19,29 +19,28 @@
     }
 }
 
-http://:80 {
-    @nowww host adrianjanczenia.dev
-    redir @nowww https://www.adrianjanczenia.dev{uri} 301
+http://adrianjanczenia.dev {
+    redir https://www.adrianjanczenia.dev{uri} 301
+}
 
-    handle {
-        encode zstd gzip
-        import static
-        import security
+http://www.adrianjanczenia.dev {
+    encode zstd gzip
+    import static
+    import security
 
-        reverse_proxy frontend-service:8080 {
-            header_up Host {host}
-            header_up X-Real-IP {remote_host}
-        }
+    reverse_proxy frontend-service:8080 {
+        header_up Host {host}
+        header_up X-Real-IP {remote_host}
+    }
 
-        handle_errors {
-            respond "{err.status_code} {err.status_text}"
-        }
+    handle_errors {
+        respond "{err.status_code} {err.status_text}"
+    }
 
-        log {
-            output file /var/log/caddy/access.log {
-                roll_size 10mb
-                roll_keep 5
-            }
+    log {
+        output file /var/log/caddy/access.log {
+            roll_size 10mb
+            roll_keep 5
         }
     }
 }
