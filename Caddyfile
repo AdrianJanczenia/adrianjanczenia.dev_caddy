@@ -19,11 +19,11 @@
     }
 }
 
-http://{$DOMAIN_NAME} {
-    redir https://www.{$DOMAIN_NAME}{uri} 301
+http://adrianjanczenia.dev {
+    redir https://www.adrianjanczenia.dev{uri} 301
 }
 
-http://www.{$DOMAIN_NAME}, http://:80 {
+http://www.adrianjanczenia.dev, http://:80 {
     encode zstd gzip
     import static
     import security
