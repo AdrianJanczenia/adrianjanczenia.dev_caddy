@@ -18,18 +18,19 @@
     }
 }
 
-http://adrianjanczenia.dev {
-    redir https://www.adrianjanczenia.dev{uri} 301
-}
+http://:80 {
+    @nowww host adrianjanczenia.dev
+    redir @nowww https://www.adrianjanczenia.dev{uri} 301
 
-http://www.adrianjanczenia.dev {
-    encode zstd gzip
-    import static
-    import security
+    handle {
+        encode zstd gzip
+        import static
+        import security
 
-    reverse_proxy frontend-service:8080 {
-        header_up Host {host}
-        header_up X-Real-IP {remote_host}
+        reverse_proxy frontend-service:8080 {
+            header_up Host {host}
+            header_up X-Real-IP {remote_host}
+        }
     }
 
     handle_errors {
