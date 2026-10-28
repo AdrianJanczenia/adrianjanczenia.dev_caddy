@@ -1,46 +1,50 @@
-{
-    email janczenia.adrian@gmail.com
-}
-
 (static) {
-    @static {
-        path *.ico *.css *.js *.gif *.jpg *.jpeg *.png *.svg *.woff *.json
-    }
-    header @static Cache-Control max-age=5184000
+	@static {
+		path *.ico *.css *.js *.gif *.jpg *.jpeg *.png *.svg *.woff *.woff2 *.json
+	}
+	header @static Cache-Control "public, max-age=300"
 }
 
 (security) {
-    header {
-        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-        X-Content-Type-Options "nosniff"
-        X-Frame-Options "DENY"
-        Referrer-Policy "strict-origin-when-cross-origin"
-    }
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		?Referrer-Policy "strict-origin-when-cross-origin"
+	}
 }
 
 http://:80 {
-    @nowww host adrianjanczenia.dev
-    redir @nowww https://www.adrianjanczenia.dev{uri} 301
+	import security
 
-    handle {
-        encode zstd gzip
-        import static
-        import security
+	@nowww host adrianjanczenia.dev
+	redir @nowww https://www.adrianjanczenia.dev{uri} 301
 
-        reverse_proxy frontend-service:8080 {
-            header_up Host {host}
-            header_up X-Real-IP {remote_host}
-        }
-    }
+	@portfolio host adrianjanczenia.dev www.adrianjanczenia.dev
+	handle @portfolio {
+		encode zstd gzip
+		import static
 
-    handle_errors {
-        respond "{err.status_code} {err.status_text}"
-    }
+		reverse_proxy frontend-service:8080
+	}
+	handle {
+		respond 404
+	}
 
-    log {
-        output file /var/log/caddy/access.log {
-            roll_size 10mb
-            roll_keep 5
-        }
-    }
+	handle_errors {
+		respond "{err.status_code} {err.status_text}"
+	}
+
+	log {
+		output file /var/log/caddy/access.log {
+			roll_size 10mb
+			roll_keep 5
+		}
+		format filter {
+			request>uri query {
+				replace token REDACTED
+			}
+			request>headers>Referer delete
+		}
+	}
 }
