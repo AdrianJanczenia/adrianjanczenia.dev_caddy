@@ -1,3 +1,10 @@
+{
+	servers {
+		trusted_proxies static {$NETBIRD_PROXY_CIDRS:127.0.0.1/32}
+		trusted_proxies_strict
+	}
+}
+
 (static) {
 	@static {
 		path *.ico *.css *.js *.gif *.jpg *.jpeg *.png *.svg *.woff *.woff2 *.json
@@ -19,6 +26,20 @@ http://:80 {
 
 	@nowww host adrianjanczenia.dev
 	redir @nowww https://www.adrianjanczenia.dev{uri} 301
+
+	@admin {
+		host www.adrianjanczenia.dev
+		path /admin /admin/*
+	}
+	handle @admin {
+		encode zstd gzip
+		header {
+			>Referrer-Policy "no-referrer"
+		}
+		reverse_proxy admin-service:8084 {
+			header_up X-Admin-Client-IP {client_ip}
+		}
+	}
 
 	@portfolio host adrianjanczenia.dev www.adrianjanczenia.dev
 	handle @portfolio {
